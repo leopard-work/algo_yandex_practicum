@@ -16,25 +16,35 @@ process.stdin.on('end', solve);
 function getSum(listNumber, number) {
     const numberArr = number.toString().split('').map(Number).reverse();
     let rem = 0;
-    let i = 0;
+    let i = j = 0;
+    const res = [];
 
     listNumber.reverse();
 
-    while (rem !== 1 && i < numberArr.length) {
-        let sum = numberArr[i] + listNumber[i] + rem;
-        console.log(sum)
-        rem = 0;
+    while (i < listNumber.length || j < numberArr.length) {
+        let sum = rem;
+
+        if (i < listNumber.length) {
+            sum += listNumber[i];
+            i++;
+        }
+
+        if (j < numberArr.length) {
+            sum += numberArr[j];
+            j++;
+        }
+
         if (sum >= 10) {
             sum -= 10;
             rem = 1;
-        }
-        listNumber[i] = sum;
-        i++;
+        } else rem = 0;
+
+        res.push(sum);
     }
 
-    console.log(rem)
+    if (rem) res.push(1);
 
-    return listNumber
+    return res.reverse();
 }
 
 function solve() {
@@ -57,4 +67,4 @@ function readArray() {
     return arr;
 }
 
-console.log(getSum([1,2,6,0], 40));
+console.log(getSum([9,9,9,1], 9));
