@@ -16,9 +16,9 @@ function printLinkedList(vertex) {
 const n3 = new Node('third');
 const n2 = new Node('second', n3);
 const n1 = new Node('first', n2);
-
-printLinkedList(n1);
-printLinkedList(n2);
+//
+// printLinkedList(n1);
+// printLinkedList(n2);
 
 // INSERT
 
@@ -37,11 +37,18 @@ function insert_node(head, index, value) {
         return new_node;
     }
     const previous_node = get_node_by_index(head, index - 1);
+
     new_node.next = previous_node.next;
+    printLinkedList(previous_node.next);
+    printLinkedList(new_node);
     previous_node.next = new_node;
     return head;
 }
 
 let node = n1, index = 2, value = 'new_node';
-let head = insert_node(node, index, value);
-print_linked_list(head);
+// let head = insert_node(node, index, value);
+
+let newNode = get_node_by_index(node,1);
+printLinkedList(newNode);
+node.next = newNode.next
+printLinkedList(node);
