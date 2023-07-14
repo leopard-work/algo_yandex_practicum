@@ -1,36 +1,56 @@
-class StackMax {
-    constructor() {
-        this.items = [];
-    }
-
-    push(item) {
-        this.items.push(item);
-    }
-
-    pop() {
-        if (!this.items.length) return 'error';
-        else this.items.pop();
-    }
-
-    get_max() {
-        if (!this.items.length) return 'None';
-        return Math.max.apply(null, this.items);
+class Node {
+    constructor(value = null, next = null) {
+        this.value = value;
+        this.next = next;
+        this.current = null;
     }
 }
 
-const commandsArr = ['get_max','push 0','get_max','get_max'];
+function Queue() {
+    this.node = null;
+    this.size = 0;
+}
+
+Queue.prototype.put = function (item) {
+    if (!this.size) {
+        this.node = new Node(item);
+        this.current = this.node;
+    }
+    else {
+        this.current.next = new Node(item);
+        this.current = this.current.next;
+    }
+    this.size++;
+}
+
+Queue.prototype.getSize = function() {
+    return this.size;
+}
+
+Queue.prototype.get = function() {
+    if (!this.size) return 'error';
+    console.log(this.node)
+    const res = this.node.value;
+    if (this.size !== 1) this.node = this.node.next;
+    else this.node = null;
+    this.size--;
+    return res;
+}
+
+//const commandsArr = ['get','size','size','get','size','size','put 26','size','size','size','size','put 6','size','put 18','size','get','get','size','get','get','size','size','size','get','size','size'];
+const commandsArr = ['put 1','put 2','put 3','get','get','put 4','get','get','get']
 const result = [];
-const stack = new StackMax();
+const myQueue = new Queue();
 commandsArr.forEach(el => {
     let commands = el.split(' ');
-    if (commands[0] === 'push') stack.push(Number(commands[1]));
-    if (commands[0] === 'pop') {
-        const tmp = stack.pop();
-        if (tmp) result.push(tmp);
+    if (commands[0] === 'put') myQueue.put(Number(commands[1]));
+    if (commands[0] === 'get') {
+        const tmp = myQueue.get();
+        if (tmp === 'error') result.push(tmp);
+        else result.push(Number(tmp));
     }
-    if (commands[0] === 'get_max') {
-        const tmp = stack.get_max();
-        result.push(tmp);
+    if (commands[0] === 'size') {
+        result.push(myQueue.getSize());
     }
 })
 
