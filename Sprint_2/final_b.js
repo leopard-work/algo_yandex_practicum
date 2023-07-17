@@ -1,3 +1,5 @@
+// https://contest.yandex.ru/contest/22781/run-report/89102749/
+
 //console.log(calcPoland(['7','2','+','4','*','2','+']))
 //console.log(calcPoland(['2','1','+','3','*']))
 //console.log(calcPoland(['3','4','+']))

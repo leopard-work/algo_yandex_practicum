@@ -1,11 +1,41 @@
-// const myDeq = new Deq(6);
-// console.log(myDeq.push_front(-201))
-// console.log(myDeq.push_back(959))
+// https://contest.yandex.ru/contest/22781/run-report/89108603/
+
 // console.log(myDeq.push_back(102))
 // console.log(myDeq.push_front(20))
 // console.log(myDeq.pop_front())
 // console.log(myDeq.pop_back())
 // console.log(myDeq)
+
+
+// push_front -323
+// push_front -415
+// push_back -868
+// push_front 765
+// push_front 938
+// pop_front
+// push_front -773
+// pop_front
+// push_back -724
+// pop_front
+// pop_back
+// push_back -20
+// pop_front
+// push_back 27
+// pop_back
+// push_front -738
+// push_back -619
+// pop_front
+// pop_back
+// pop_front
+// push_back -289
+// pop_back
+// pop_back
+// pop_back
+// push_back -251
+// pop_front
+// pop_back
+// push_front -89
+// pop_back
 
 const _readline = require('readline');
 
@@ -34,7 +64,7 @@ Deq.prototype.push_front = function (value) {
     if (this.size === this.maxSize) return 'error';
 
     this.items[this.head] = value;
-    this.head++;
+    this.head = (this.head + 1) % this.maxSize;
     this.size++;
 }
 
@@ -43,6 +73,7 @@ Deq.prototype.push_back = function (value) {
 
     this.items[this.tail] = value;
     this.tail--;
+    if (this.tail < 0) this.tail = this.maxSize - 1;
     this.size++;
 }
 
@@ -104,3 +135,52 @@ function readInt() {
     _curLine++;
     return n;
 }
+
+const myDeq = new Deq(113);
+// myDeq.push_front(1)
+// myDeq.push_front(2)
+// console.log(myDeq.pop_back())
+// console.log(myDeq.pop_front())
+// myDeq.push_front(1)
+// console.log(myDeq.pop_back())
+// console.log(myDeq)
+
+
+console.log(myDeq.push_front(-323))
+console.log(myDeq.push_front(-415))
+console.log(myDeq.push_back(-868))
+console.log(myDeq.push_front(765))
+console.log(myDeq.push_front(938))
+console.log(myDeq.pop_front())
+console.log(myDeq.push_front(-773))
+console.log(myDeq.pop_front())
+console.log(myDeq.push_back(-724))
+console.log(myDeq.pop_front())
+console.log(myDeq.pop_back())
+console.log(myDeq.push_back(-20))
+console.log(myDeq.pop_front())
+console.log(myDeq.push_back(-27))
+console.log(myDeq.pop_back())
+console.log(myDeq.push_front(-738))
+console.log(myDeq.push_back(-619))
+console.log(myDeq.pop_front())
+console.log(myDeq.pop_back())
+console.log(myDeq.pop_front())
+console.log(myDeq.push_back(-278))
+console.log(myDeq.pop_back())
+console.log(myDeq.pop_back())
+console.log(myDeq.pop_back())
+console.log(myDeq.push_back(-251))
+console.log(myDeq.pop_front())
+console.log(myDeq.pop_back())
+console.log(myDeq.push_front(-89))
+console.log(myDeq.pop_back())
+console.log(myDeq.pop_front())
+
+// console.log(myDeq)
+//
+console.log(myDeq.push_front(-1))
+console.log(myDeq.push_front(-2))
+console.log(myDeq.push_front(-3))
+// console.log(myDeq)
+console.log(myDeq.pop_back())
