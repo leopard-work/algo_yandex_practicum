@@ -38,12 +38,20 @@ function flowerbeds(arr) {
 function solve() {
     const rows = readInt();
     const arr = [];
-    const price = readInt();
+    for (let i = 0; i < rows; i++) {
+        const tmp = readArray();
+        arr.push(tmp);
+    }
 
-    const result1 = twoBikes(arr, price);
-    const result2 = twoBikes(arr, price + price);
+    const result = flowerbeds(arr);
+    result.forEach((item,i) => {
+        process.stdout.write(`${item.join(' ')}`);
+        if (i !== result.length) {
+            process.stdout.write(`\n`);
+        }
+    })
 
-    process.stdout.write(`${result1} ${result2}`);
+
 }
 
 function readInt() {
