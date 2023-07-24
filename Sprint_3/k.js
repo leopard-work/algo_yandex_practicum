@@ -8,96 +8,54 @@ function merge_sort(arr, left, right) {
     merge_sort(arr, left, mid);
     merge_sort(arr, mid, right);
 
-    merge(arr, left, mid, right)
+    const res = merge(arr, left, mid, right)
+
+    res.forEach((item,i) => {
+        arr[left + i] = item;
+    })
 }
 
-function merge(arr, left, mid, right)
-{
-    let n1 = mid - left;
-    let n2 = right - mid ;
+function merge(arr, left, mid, right) {
+    const leftArr = [];
+    const rightArr = [];
+    const res = [];
 
-    let L = new Array(n1);
-    let R = new Array(n2);
-
-    for (let i = 0; i < n1; i++)
-        L[i] = arr[left + i];
-    for (let j = 0; j < n2; j++)
-        R[j] = arr[mid + j];
+    for (let i = left; i <= right - 1; i++) {
+        if (i < mid) {
+            leftArr.push(arr[i]);
+        } else {
+            rightArr.push(arr[i]);
+        }
+    }
 
     let i = 0;
     let j = 0;
-    let k = left;
 
-    // console.log(L)
-    // console.log(R)
-
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            arr[k] = L[i];
-            i++;
+    while (i < leftArr.length && j < rightArr.length) {
+        if (leftArr[i] < rightArr[j]) {
+            res.push(leftArr[i]);
+            i++
+        } else {
+            res.push(rightArr[j]);
+            j++
         }
-        else {
-            arr[k] = R[j];
-            j++;
-        }
-        k++;
+        left++;
     }
 
-    while (i < n1) {
-        arr[k] = L[i];
+    while (i < leftArr.length) {
+        res.push(leftArr[i]);
         i++;
-        k++;
+        left++;
     }
 
-    while (j < n2) {
-        arr[k] = R[j];
+    while (j < rightArr.length) {
+        res.push(rightArr[j]);
         j++;
-        k++;
+        left++;
     }
 
-    return arr;
+    return res;
 }
-
-// function merge(arr, left, mid, right) {
-//     const leftArr = [];
-//     const rightArr = [];
-//
-//     for (let i = left; i <= right - 1; i++) {
-//         if (i < mid) {
-//             leftArr.push(arr[i]);
-//         } else {
-//             rightArr.push(arr[i]);
-//         }
-//     }
-//
-//     let i = 0;
-//     let j = 0;
-//
-//     while (i < leftArr.length && j < rightArr.length) {
-//         if (leftArr[i] < rightArr[j]) {
-//             arr[left] = leftArr[i];
-//             i++
-//         } else {
-//             arr[left] = rightArr[j];
-//             j++
-//         }
-//         left++;
-//     }
-//
-//     while (i < leftArr.length) {
-//         arr[left] = leftArr[i];
-//         i++;
-//         left++;
-//     }
-//
-//     while (j < rightArr.length) {
-//         arr[left] = rightArr[j];
-//         j++;
-//         left++;
-//     }
-//
-//     return arr;
-// }
 
 function test() {
     var a = [1, 4, 9, 2, 10, 11];
@@ -112,7 +70,9 @@ function test() {
 // var a = [1, 4, 9, 2, 10, 11];
 // var b = merge(a, 0, 3, 6);
 // console.log(b)
-
+//
+// console.log(a);
+//
 // var c = [1, 4, 2, 10, 1, 2];
 // merge_sort(c, 0, 6)
 // console.log(c)
