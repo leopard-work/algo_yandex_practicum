@@ -14,48 +14,53 @@ _reader.on('line', line => {
 process.stdin.on('end', solve);
 
 function trash(arr, search) {
-    let end = arr.length - 2;
-    let step = 1;
-    let res = [];
-
-    while (end >= 0) {
-        for (let i = 0; i <= end; i++) {
-            res.push(Math.abs(arr[i + step] - arr[i]))
-            //j++;
+    //arr.sort((a,b) => a-b);
+    let tmp = 0;
+    let m = 0;
+    let sortArr = Array(1000000);
+    arr.forEach((el,i) => {
+        if (sortArr[el]) sortArr[el]++;
+        else sortArr[el] = 1;
+        m = Math.max(m,el);
+    })
+    let k = 0;
+    while (tmp <= m) {
+        if (sortArr[tmp] != null) {
+            arr[k] = tmp;
+            sortArr[tmp]--;
+            if (sortArr[tmp]) tmp--;
+            k++;
         }
-        end--;
-        step++;
+        tmp++;
     }
 
-    console.log(res);
+    // console.log(arr);
 
-    // j = 0;
-    // for (step = 1; step <= res.length; step++) {
-    //     if (res[step]) j += res[step];
-    //     if (j >= search) {
-    //         console.log(res)
-    //         return step;
-    //     }
-    // }
-    // return res;
+    let minValue = 0;
+    let maxValue = arr[arr.length - 1] - arr[0];
 
-    // let res = Array(500000);
-    //
-    // for (let i = 0; i < arr.length - 1; i++) {
-    //     for (let j = i + 1; j < arr.length; j++) {
-    //         if (res[Math.abs(arr[j] - arr[i])]) res[Math.abs(arr[j] - arr[i])]++;
-    //         else res[Math.abs(arr[j] - arr[i])] = 1;
-    //     }
-    // }
-    //
-    // let k = 0;
-    //
-    // //console.log(res)
-    //
-    // for (let j = 0; j < res.length; j++) {
-    //     if (res[j]) k+=res[j];
-    //     if (k >= search) return j;
-    // }
+    while (minValue !== maxValue) {
+        let midValue = minValue + Math.floor((maxValue - minValue) / 2);
+        let count = 0;
+
+        for (let right = 1; right < arr.length; right++) {
+            let left = 0;
+
+            while (arr[right] - arr[left] > midValue) {
+                left++;
+            }
+
+            count += right - left;
+        }
+
+        if (count >= search) {
+            maxValue = midValue;
+        } else {
+            minValue = midValue + 1;
+        }
+    }
+
+    return minValue;
 }
 
 function solve() {
@@ -79,4 +84,4 @@ function readArray() {
     return arr;
 }
 
-console.log(trash([7,3,7,2], 6))
+console.log(trash([7,2,7,3], 4))
