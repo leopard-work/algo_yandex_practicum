@@ -14,25 +14,25 @@ _reader.on('line', line => {
 process.stdin.on('end', solve);
 
 function trash(arr, search) {
-    //arr.sort((a,b) => a-b);
-    let tmp = 0;
-    let m = 0;
-    let sortArr = Array(1000000);
-    arr.forEach((el,i) => {
-        if (sortArr[el]) sortArr[el]++;
-        else sortArr[el] = 1;
-        m = Math.max(m,el);
-    })
-    let k = 0;
-    while (tmp <= m) {
-        if (sortArr[tmp] != null) {
-            arr[k] = tmp;
-            sortArr[tmp]--;
-            if (sortArr[tmp]) tmp--;
-            k++;
-        }
-        tmp++;
-    }
+    arr.sort((a,b) => a-b);
+    // let tmp = 0;
+    // let m = 0;
+    // let sortArr = Array(1000000);
+    // arr.forEach((el,i) => {
+    //     if (sortArr[el]) sortArr[el]++;
+    //     else sortArr[el] = 1;
+    //     m = Math.max(m,el);
+    // })
+    // let k = 0;
+    // while (tmp <= m) {
+    //     if (sortArr[tmp] != null) {
+    //         arr[k] = tmp;
+    //         sortArr[tmp]--;
+    //         if (sortArr[tmp]) tmp--;
+    //         k++;
+    //     }
+    //     tmp++;
+    // }
 
     // console.log(arr);
 
@@ -40,7 +40,8 @@ function trash(arr, search) {
     let maxValue = arr[arr.length - 1] - arr[0];
 
     while (minValue !== maxValue) {
-        let midValue = minValue + Math.floor((maxValue - minValue) / 2);
+        // let midValue = minValue + Math.floor((maxValue - minValue) / 2);
+        let midValue = Math.floor((maxValue + minValue) / 2);
         let count = 0;
 
         for (let right = 1; right < arr.length; right++) {
@@ -84,4 +85,4 @@ function readArray() {
     return arr;
 }
 
-console.log(trash([7,2,7,3], 4))
+console.log(trash([1,2,3,4,5], 5))
