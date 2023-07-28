@@ -13,55 +13,60 @@ _reader.on('line', line => {
 
 process.stdin.on('end', solve);
 
+function searchAmount(arr, minValue, maxValue, search) {
+    if (minValue === maxValue) {
+        return minValue;
+    }
+
+    let midValue = minValue + Math.floor((maxValue - minValue) / 2);
+    let count = 0;
+    let left = 0;
+
+    for (let right = 1; right < arr.length; right++) {
+        while (arr[right] - arr[left] > midValue) {
+            left++;
+        }
+        count += right - left;
+    }
+
+    if (count >= search) {
+        minValue = searchAmount(arr, minValue, midValue, search);
+    } else {
+        minValue = searchAmount(arr, midValue + 1, maxValue, search);
+    }
+
+    return minValue;
+}
+
 function trash(arr, search) {
     arr.sort((a,b) => a-b);
-    // let tmp = 0;
-    // let m = 0;
-    // let sortArr = Array(1000000);
-    // arr.forEach((el,i) => {
-    //     if (sortArr[el]) sortArr[el]++;
-    //     else sortArr[el] = 1;
-    //     m = Math.max(m,el);
-    // })
-    // let k = 0;
-    // while (tmp <= m) {
-    //     if (sortArr[tmp] != null) {
-    //         arr[k] = tmp;
-    //         sortArr[tmp]--;
-    //         if (sortArr[tmp]) tmp--;
-    //         k++;
-    //     }
-    //     tmp++;
-    // }
-
-    // console.log(arr);
 
     let minValue = 0;
     let maxValue = arr[arr.length - 1] - arr[0];
 
-    while (minValue !== maxValue) {
-        // let midValue = minValue + Math.floor((maxValue - minValue) / 2);
-        let midValue = Math.floor((maxValue + minValue) / 2);
-        let count = 0;
+    // while (minValue !== maxValue) {
+    //     let midValue = minValue + Math.floor((maxValue - minValue) / 2);
+    //     //let midValue = Math.floor((maxValue + minValue) / 2);
+    //     let count = 0;
+    //
+    //     for (let right = 1; right < arr.length; right++) {
+    //         let left = 0;
+    //
+    //         while (arr[right] - arr[left] > midValue) {
+    //             left++;
+    //         }
+    //
+    //         count += right - left;
+    //     }
+    //
+    //     if (count >= search) {
+    //         maxValue = midValue;
+    //     } else {
+    //         minValue = midValue + 1;
+    //     }
+    // }
 
-        for (let right = 1; right < arr.length; right++) {
-            let left = 0;
-
-            while (arr[right] - arr[left] > midValue) {
-                left++;
-            }
-
-            count += right - left;
-        }
-
-        if (count >= search) {
-            maxValue = midValue;
-        } else {
-            minValue = midValue + 1;
-        }
-    }
-
-    return minValue;
+    return searchAmount(arr, minValue, maxValue, search);
 }
 
 function solve() {
