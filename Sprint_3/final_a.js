@@ -1,3 +1,5 @@
+// https://contest.yandex.ru/contest/23815/run-report/89318592/
+
 function brokenSearch(arr, k) {
     let left = 0;
     let right = arr.length - 1;

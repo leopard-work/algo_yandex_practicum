@@ -1,59 +1,75 @@
-const _readline = require('readline');
+function swap(arr, i ,j) {
+    let tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+}
 
-const _reader = _readline.createInterface({
-    input: process.stdin
-});
+function helper(a, b) {
+    const MORE = 'more';
+    const LESS = 'less';
 
-const _inputLines = [];
-let _curLine = 0;
-
-_reader.on('line', line => {
-    _inputLines.push(line);
-});
-
-process.stdin.on('end', solve);
-
-function trash(arr, search) {
-    arr.sort((a,b) => a-b);
-    let lo = 0;
-    let hi = arr[arr.length - 1] - arr[0];
-
-    while (lo < hi) {
-        let mi = lo + Math.floor((hi-lo) / 2);
-        // Sliding window
-        let count = 0, left = 0;
-        for (let right = 1; right < arr.length; ++right) {
-            // Keep moving left pointer until we reach a difference between two pointers that is less than mi
-            while (arr[right] - arr[left] > mi) left++;
-            // Add the amount of pairs in the window to the count
-            count += right - left;
-        }
-        //count = number of pairs with distance <= mi
-        if (count >= search) hi = mi;
-        else lo = mi + 1;
+    if (a[1] < b[1]) {
+        return LESS;
     }
-    return lo;
+    if (a[1] > b[1]) {
+        return MORE;
+    }
+
+    if (a[1] === b[1]) {
+        if (a[2] < b[2]) {
+            return MORE;
+        }
+        if (a[2] > b[2]) {
+            return LESS;
+        }
+
+        if (a[2] === b[2]) {
+            if (a[0] < b[0]) {
+                return MORE;
+            }
+            if (a[0] > b[0]) {
+                return LESS;
+            }
+        }
+    }
 }
 
-function solve() {
-    const rows = readInt();
-    const arr = readArray();
-    const search = readInt();
-    const result = trash(arr, search);
+function inPlaceQuickSort(arr, left = 0, right = arr.length - 1) {
+    let i = left;
+    let j = right;
 
-    process.stdout.write(`${result}`);
+    const pivot = arr[Math.floor((left + right) / 2)];
+
+    while (i <= j) {
+        while (helper(arr[i], pivot) === 'less') {
+            i++;
+        }
+        while (helper(arr[j], pivot) === 'more') {
+            j--;
+        }
+
+        if (i <= j) {
+            swap(arr, i, j);
+            i++;
+            j--;
+        }
+    }
+
+    if (left < j) {
+        inPlaceQuickSort(arr, left, i);
+    }
+    if (right > i) {
+        inPlaceQuickSort(arr, i, right);
+    }
 }
 
-function readInt() {
-    const n = Number(_inputLines[_curLine]);
-    _curLine++;
-    return n;
-}
 
-function readArray() {
-    var arr = _inputLines[_curLine].trim(" ").split(" ").map(num => Number(num));
-    _curLine++;
-    return arr;
-}
+// const arr = [4,8,9,20,1,5,3,10];
+// const arr = [4,6,2,3,5];
+// inPlaceQuickSort(arr);
+// console.log(arr)
 
-console.log(trash([27,91,8,68,35,71,32,49,6], 22))
+// const arr = [["alla",4,100],["gena",6,1000],["gosha",2,90],["rita",2,90],["timofey",4,80]]
+const arr = [["alla",0,0],["gena",0,0],["gosha",0,0],["rita",0,0],["timofey",0,0]]
+inPlaceQuickSort(arr);
+console.log(arr);
