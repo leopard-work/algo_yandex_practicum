@@ -1,1 +1,7 @@
-console.log(!isNaN(Number('*')))
+function mystery() {
+    var results =
+        {sanity: 'Hello'};
+    return results;
+}
+
+console.log(mystery())
