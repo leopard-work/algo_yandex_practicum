@@ -1,10 +1,10 @@
-// https://contest.yandex.ru/contest/23815/run-report/89450950/
+// https://contest.yandex.ru/contest/23815/run-report/89495398/
 
 /*
     ### Принцип работы
 
         Функция inPlaceQuickSort работает по принципу быстрой сортировки, не используя дополнительной памяти
-        Есть опорный элемент pivot в середине массива и два указателя left, right которые указывают на концы отрезка массива
+        Есть опорный случайный элемент pivot и два указателя left, right которые указывают на концы отрезка массива
         Левый указатель двигается пока он указывает на элемент меньше опорного. Правый двигается влево пока указывает на элемент больше опорного
         Элементы по указателям меняются местами через функцию swap и передвигаются на следующие элементы пока не столкнутся
 
@@ -69,7 +69,7 @@ function inPlaceQuickSort(arr, left = 0, right = arr.length - 1) {
     let i = left;
     let j = right;
 
-    const pivot = arr[Math.floor((left + right) / 2)];
+    const pivot = arr[Math.floor(Math.random() * (right - left)) + left];
 
     while (i <= j) {
         while (helper(arr[i], pivot) === 'more') {
