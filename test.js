@@ -1,7 +1,7 @@
-console.log(161421 - (Math.floor(161421 / 256) * 256))
+for (let i = 0; i < 10; i++) {
 
-console.log(283062440120 % 256)
+        setTimeout(function () {
+            console.log(i);
+        }, 100);
 
-console.log('s'.charCodeAt())
-// xxxxx
-// aaaaas
+}
