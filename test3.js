@@ -1,45 +1,98 @@
-function sumSum(arr, x) {
-    arr.sort((a,b) => a - b);
-    //console.log(arr);
-    const res = [];
+const readline = require('readline');
 
-    for (let j = 0; j < arr.length - 3; j++) {
-        if (arr[j] !== arr[j - 1]) {
-            for (let i = j + 1; i < arr.length - 2; i++) {
-                if (i > j + 1 && arr[i] === arr[i - 1]) continue;
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
-                let first = arr[j];
-                let second = arr[i];
-                let left = i + 1;
-                let right = arr.length - 1;
+function main() {
+    let n;
+    const text_dict = {};
 
-                while (left < right) {
-                    const s = first + second + arr[left] + arr[right];
+    rl.question('Enter the value of n: ', (nInput) => {
+        n = parseInt(nInput);
 
-                    if (s === x) {
-                        //console.log([first, second, arr[left], arr[right]]);
-                        res.push([first, second, arr[left], arr[right]]);
-                        while(arr[left] === arr[left + 1]) left++;
-                        while(arr[right] === arr[right - 1]) right--;
-                        left++;
-                        right--;
-                    } else {
-                        if (s < x) {
-                            left++;
+        let count = 0;
+        function processLine() {
+            rl.question('Enter a line of text: ', (line) => {
+                const words = line.trim().split(' ');
+
+                const row_count = count + 1;
+                for (const word of words) {
+                    if (word in text_dict) {
+                        if (row_count in text_dict[word]) {
+                            text_dict[word][row_count] += 1;
                         } else {
-                            right--;
+                            text_dict[word][row_count] = 1;
                         }
+                    } else {
+                        text_dict[word] = { [row_count]: 1 };
                     }
                 }
 
-            }
+                count++;
+                if (count < n) {
+                    processLine();
+                } else {
+                    processSearch();
+                }
+            });
         }
-    }
 
+        function processSearch() {
+            let m;
+            rl.question('Enter the value of m: ', (mInput) => {
+                m = parseInt(mInput);
 
-    return res;
+                let search_count = 0;
+                function processSearchLine() {
+                    rl.question('Enter a line of search words: ', (line) => {
+                        const search_words = line.trim().split(' ');
+
+                        const unique_words = new Set();
+                        const search = {};
+
+                        for (const word of search_words) {
+                            if (word in text_dict && !unique_words.has(word)) {
+                                unique_words.add(word);
+                                for (const doc_dict in text_dict[word]) {
+                                    const relevance = text_dict[word][doc_dict];
+                                    if (doc_dict in search) {
+                                        search[doc_dict] += relevance;
+                                    } else {
+                                        search[doc_dict] = relevance;
+                                    }
+                                }
+                            }
+                        }
+
+                        let count = 0;
+                        for (const [key, value] of Object.entries(search).sort((a, b) => b[1] - a[1] || a[0] - b[0])) {
+                            if (count === 5) {
+                                break;
+                            }
+                            process.stdout.write(`${key} `);
+                            count++;
+                        }
+                        if (Object.keys(search).length > 0) {
+                            process.stdout.write('\n');
+                        }
+
+                        search_count++;
+                        if (search_count < m) {
+                            processSearchLine();
+                        } else {
+                            rl.close();
+                        }
+                    });
+                }
+
+                processSearchLine();
+            });
+        }
+
+        processLine();
+    });
 }
 
-console.log(sumSum([2, 3, 2, 4, 1, 10, 3, 0], 10))
-console.log(sumSum([1, 0, -1, 0, 2, -2], 0))
-console.log(sumSum([1, 1, 1, 1, 1], 4))
+main();
