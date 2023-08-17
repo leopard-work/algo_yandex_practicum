@@ -66,6 +66,8 @@ function main() {
                             }
                         }
 
+                        console.log(text_dict);
+
                         let count = 0;
                         for (const [key, value] of Object.entries(search).sort((a, b) => b[1] - a[1] || a[0] - b[0])) {
                             if (count === 5) {

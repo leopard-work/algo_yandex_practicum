@@ -1,25 +1,20 @@
 function dbIndex(textArr) {
-    const db = new Map();
+    const db = {};
 
-    for (let i = 0; i < textArr.length; i++) {
-        let text = textArr[i].split(/\s+/g);
+    for (let i = 1; i <= textArr.length; i++) {
+        let text = textArr[i - 1].split(/\s+/g);
 
-        text.forEach(word => {
-            if (db.has(word)) {
-                const map = db.get(word);
-
-                if (map.has(i + 1)) {
-                    map.set(i + 1, map.get(i + 1) + 1)
+        for (word of text) {
+            if (word in db) {
+                if (i in db[word]) {
+                    db[word][i]++;
                 } else {
-                    map.set(i + 1, 1);
+                    db[word][i] = 1;
                 }
             } else {
-                const map = new Map();
-
-                map.set(i + 1, 1);
-                db.set(word, map);
+                db[word] = {[i]: 1};
             }
-        })
+        }
     }
 
     return db;
@@ -27,33 +22,40 @@ function dbIndex(textArr) {
 
 function searchSystem(text, queries) {
     const db = dbIndex(text);
+
+    console.log(db);
+
     const results = [];
     let index = 0;
 
     queries.forEach(query => {
         let words = new Set(query.split(/\s+/g));
-        const queryResult = new Map();
+        const queryResult = {};
 
         words.forEach(word => {
-            if (db.has(word)) {
-                for (value of db.get(word).entries()) {
-                    if (queryResult.has(value[0])) {
-                        queryResult.set(value[0], queryResult.get(value[0]) + value[1])
+            if (word in db) {
+                for (const value in db[word]) {
+                    console.log(value);
+                    if (value in queryResult) {
+                        queryResult[value] += db[word][value]
                     } else {
-                        queryResult.set(value[0], value[1])
+                        queryResult[value] = db[word][value]
                     }
                 }
             }
         })
 
-        if (queryResult.size) {
+        console.log(queryResult);
+
+
+        const arr = Object.entries(queryResult).sort((a,b) => b[1] - a[1] || a[0] - b[0]);
+
+        if (arr.length) {
             results[index] = [];
 
-            Array.from(queryResult).sort((a,b) => b[1] - a[1]).forEach((item, i) => {
-                if (i < 5) {
-                    results[index].push(item[0]);
-                }
-            })
+            for (let i = 0; i < 5; i++) {
+                if (arr[i]) results[index].push(arr[i][0]);
+            }
 
             index++;
         }
@@ -124,8 +126,11 @@ _reader.on('line', line => {
 
 process.stdin.on('end', solve);
 
-// const arr = ["i love i coffee", "coffee with milk and sugar", "free tea for everyone", "i", "i", "i", "i", "i"];
+// const arr = ["i love i coffee", "coffee with milk and sugar", "free tea for everyone"];
 // const search = ["i like black coffee without milk", "everyone loves new year", "mary likes black coffee without milk"];
+
+const arr = ["i love i coffee", "coffee with milk and sugar", "free tea for everyone", "i", "i", "i", "i", "i"];
+const search = ["i like black coffee without milk", "everyone loves new year", "mary likes black coffee without milk"];
 
 // const arr = ["buy flat in moscow", "rent flat in moscow", "sell flat in moscow", "want flat in moscow like crazy", "clean flat in moscow on weekends", "renovate flat in moscow"];
 // const search = ["flat in moscow for crazy weekends"];
@@ -133,4 +138,4 @@ process.stdin.on('end', solve);
 // const arr = ["i like dfs and bfs", "i like dfs dfs", "i like bfs with bfs and bfs"];
 // const search = ["dfs dfs dfs dfs bfs"];
 
-// console.log(searchSystem(arr, search))
+console.log(searchSystem(arr, search))
