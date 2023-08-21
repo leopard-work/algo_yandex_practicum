@@ -1,75 +1,59 @@
-function swap(arr, i ,j) {
-    let tmp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = tmp;
-}
+function blockPrint(input){
+    const db = {};
+    let result = "";
 
-function helper(a, b) {
-    const MORE = 'more';
-    const LESS = 'less';
+    db['a'] = [" AAA ", "A   A", "A   A", "AAAAA", "A   A", "A   A", "A   A"];
+    db['b'] = ["BBBB ", "B   B", "B   B", "BBBB ", "B   B", "B   B", "BBBB "];
+    db['c'] = [" CCC ", "C   C", "C    ", "C    ", "C    ", "C   C", " CCC "];
+    db['d'] = ["DDDD ", "D   D", "D   D", "D   D", "D   D", "D   D", "DDDD "];
+    db['e'] = ["EEEEE", "E    ", "E    ", "EEEEE", "E    ", "E    ", "EEEEE"];
+    db['f'] = ["FFFFF", "F    ", "F    ", "FFFFF", "F    ", "F    ", "F    "];
+    db['g'] = [" GGG ", "G   G", "G    ", "G GGG", "G   G", "G   G", " GGG "];
+    db['h'] = ["H   H", "H   H", "H   H", "HHHHH", "H   H", "H   H", "H   H"];
+    db['i'] = ["IIIII", "  I  ", "  I  ", "  I  ", "  I  ", "  I  ", "IIIII"];
+    db['j'] = ["JJJJJ", "    J", "    J", "    J", "    J", "    J", "JJJJ "];
+    db['k'] = ["K   K", "K  K ", "K K  ", "KK   ", "K K  ", "K  K ", "K   K"];
+    db['l'] = ["L    ", "L    ", "L    ", "L    ", "L    ", "L    ", "LLLLL"];
+    db['m'] = ["M   M", "MM MM", "M M M", "M   M", "M   M", "M   M", "M   M"];
+    db['n'] = ["N   N", "NN  N", "N   N", "N N N", "N   N", "N  NN", "N   N"];
+    db['o'] = [" OOO ", "O   O", "O   O", "O   O", "O   O", "O   O", " OOO "];
+    db['p'] = ["PPPP ", "P   P", "P   P", "PPPP ", "P    ", "P    ", "P    "];
+    db['q'] = [" QQQ ", "Q   Q", "Q   Q", "Q   Q", "Q Q Q", "Q  QQ", " QQQQ"];
+    db['r'] = ["RRRR ", "R   R", "R   R", "RRRR ", "R R  ", "R  R ", "R   R"];
+    db['s'] = [" SSS ", "S   S", "S    ", " SSS ", "    S", "S   S", " SSS "];
+    db['t'] = ["TTTTT", "  T  ", "  T  ", "  T  ", "  T  ", "  T  ", "  T  "];
+    db['u'] = ["U   U", "U   U", "U   U", "U   U", "U   U", "U   U", " UUU "];
+    db['v'] = ["V   V", "V   V", "V   V", "V   V", "V   V", " V V ", "  V  "];
+    db['w'] = ["W   W", "W   W", "W   W", "W W W", "W W W", "W W W", " W W "];
+    db['x'] = ["X   X", "X   X", " X X ", "  X  ", " X X ", "X   X", "X   X"];
+    db['y'] = ["Y   Y", "Y   Y", " Y Y ", "  Y  ", "  Y  ", "  Y  ", "  Y  "];
+    db['z'] = ["ZZZZZ", "    Z", "   Z ", "  Z  ", " Z   ", "Z    ", "ZZZZZ"];
+    db['space'] = ["     ", "     ", "     ", "     ", "     ", "     ", "     "];
 
-    if (a[1] < b[1]) {
-        return LESS;
-    }
-    if (a[1] > b[1]) {
-        return MORE;
-    }
+    input = input.trim().toLowerCase();
 
-    if (a[1] === b[1]) {
-        if (a[2] < b[2]) {
-            return MORE;
-        }
-        if (a[2] > b[2]) {
-            return LESS;
-        }
+    if (!input) return "";
 
-        if (a[2] === b[2]) {
-            if (a[0] < b[0]) {
-                return MORE;
+    for (let i = 0; i < 7; i++) {
+        for (let j = 0; j < input.length; j++) {
+            if (input[j] === " ") {
+                result += db['space'][i];
             }
-            if (a[0] > b[0]) {
-                return LESS;
+            else {
+                result += db[input[j]][i];
+            }
+
+            if (j !== input.length - 1) {
+                result += " ";
+            } else {
+                result = result.trimEnd();
             }
         }
+
+        if (i !== 6) result += "\n";
     }
+
+    return result;
 }
 
-function inPlaceQuickSort(arr, left = 0, right = arr.length - 1) {
-    let i = left;
-    let j = right;
-
-    const pivot = arr[Math.floor((left + right) / 2)];
-
-    while (i <= j) {
-        while (helper(arr[i], pivot) === 'less') {
-            i++;
-        }
-        while (helper(arr[j], pivot) === 'more') {
-            j--;
-        }
-
-        if (i <= j) {
-            swap(arr, i, j);
-            i++;
-            j--;
-        }
-    }
-
-    if (left < j) {
-        inPlaceQuickSort(arr, left, i);
-    }
-    if (right > i) {
-        inPlaceQuickSort(arr, i, right);
-    }
-}
-
-
-// const arr = [4,8,9,20,1,5,3,10];
-// const arr = [4,6,2,3,5];
-// inPlaceQuickSort(arr);
-// console.log(arr)
-
-// const arr = [["alla",4,100],["gena",6,1000],["gosha",2,90],["rita",2,90],["timofey",4,80]]
-const arr = [["alla",0,0],["gena",0,0],["gosha",0,0],["rita",0,0],["timofey",0,0]]
-inPlaceQuickSort(arr);
-console.log(arr);
+console.log(blockPrint(""))
