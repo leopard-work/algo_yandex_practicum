@@ -1,124 +1,53 @@
-// Helper function to find the node with the minimum key in the subtree with root `curr`
-function getMinimumKey(curr) {
-    while (curr.left !== null) {
-        curr = curr.left;
-    }
-    return curr;
+function ListNode(val, next) {
+    this.val = (val===undefined ? 0 : val)
+    this.next = (next===undefined ? null : next)
 }
 
-// Recursive function to insert a key into the BST
-function insert(root, key) {
-    // if the root is null, create a new node and return it
-    if (root === null) {
-        return { data: key, left: null, right: null };
-    }
+var addTwoNumbers = function(l1, l2) {
+    const result = new ListNode(null);
+    let curr = result;
+    let save = 0;
 
-    // if the given key is less than the root node, recurse for the left subtree
-    if (key < root.data) {
-        root.left = insert(root.left, key);
-    }
+    while (l1?.val || l2?.val || save) {
+        let sum = save;
 
-    // if the given key is greater than the root node, recurse for the right subtree
-    else {
-        root.right = insert(root.right, key);
-    }
-
-    return root;
-}
-
-// Iterative function to search for a key in the subtree with root `curr` and set its parent.
-// Note that `curr` and `parent` are passed by reference to the function.
-function searchKey(curr, key, parent) {
-    // traverse the tree and search for the key
-    while (curr !== null && curr.data !== key) {
-        // update the parent to the current node
-        parent[0] = curr;
-
-        // if the given key is less than the current node, go to the left subtree;
-        // otherwise, go to the right subtree
-        if (key < curr.data) {
-            curr = curr.left;
-        }
-        else {
-            curr = curr.right;
-        }
-    }
-}
-
-// Function to delete a node from the BST
-function deleteNode(root, key) {
-    // pointer to store the parent of the current node
-    let parent = [null];
-
-    // start with the root node
-    let curr = root;
-
-    // search for the key in the BST and set its parent pointer
-    searchKey(curr, key, parent);
-
-    // return if the key is not found in the tree
-    if (curr === null) {
-        return;
-    }
-
-    // Case 1: the node to be deleted is a leaf node (i.e., it has no children)
-    if (curr.left === null && curr.right === null) {
-        // if the node to be deleted is not the root node, set its parent's left/right child to null
-        if (curr !== root) {
-            if (parent[0].left === curr) {
-                parent[0].left = null;
-            }
-            else {
-                parent[0].right = null;
-            }
-        }
-        // if the tree has only the root node, set it to null
-        else {
-            root = null;
-        }
-
-        // free the memory
-        curr = null;
-    }
-
-    // Case 2: the node to be deleted has two children
-    else if (curr.left && curr.right) {
-        // find its in-order successor node
-        let successor = getMinimumKey(curr.right);
-
-        // save the value of the successor node
-        let val = successor.data;
-
-        // recursively delete the successor node. Note that the successor
-        // will have at most one child (right child)
-        deleteNode(root, successor.data);
-
-        // copy the value of the successor node to the current node
-        curr.data = val;
-    }
-
-    // Case 3: the node to be deleted has only one child
-    else {
-        // select the child node
-        let child = (curr.left !== null) ? curr.left : curr.right;
-
-        // if the node to be deleted is not the root node, set its parent
-        // to its child node
-        if (curr !== root) {
-            if (curr === parent[0].left) {
-                parent[0].left = child;
-            }
-            else {
-                parent[0].right = child;
+        if (l1?.val && l2?.val) {
+            sum += l1.val + l2.val;
+            l1 = l1.next;
+            l2 = l2.next;
+        } else {
+            if (l1?.val) {
+                sum += l1.val;
+                l1 = l1.next;
+            } else {
+                if (l2?.val) {
+                    sum += l2.val;
+                    l2 = l2.next;
+                } else {
+                    sum = save;
+                    save = 0;
+                }
             }
         }
 
-        // if the node to be deleted is the root node, set the root to its child node
-        else {
-            root = child;
+        if (sum >= 10) {
+            save = sum - 9;
+            sum -= 10;
         }
 
-        // free the memory
-        curr = null;
+        curr.next = new ListNode(sum);
+        curr = curr.next;
     }
-}
+
+    return result.next;
+};
+
+const node1 = new ListNode(4, null)
+const node2 = new ListNode(6, node1);
+const node6 = new ListNode(5, node1);
+
+const node3 = new ListNode(3, null);
+const node4 = new ListNode(4, node3);
+const node5 = new ListNode(2, node4);
+
+console.log(addTwoNumbers(node6, node5))
