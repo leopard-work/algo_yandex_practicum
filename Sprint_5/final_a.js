@@ -22,31 +22,28 @@
 */
 
 
-const MORE = 'more';
-const LESS = 'less';
-
-function helper(a, b) {
+function compare(a, b) {
     if (a[1] < b[1]) {
-        return LESS;
+        return -1;
     }
     if (a[1] > b[1]) {
-        return MORE;
+        return 1;
     }
 
     if (a[1] === b[1]) {
         if (a[2] < b[2]) {
-            return MORE;
+            return 1;
         }
         if (a[2] > b[2]) {
-            return LESS;
+            return -1;
         }
 
         if (a[2] === b[2]) {
             if (a[0] < b[0]) {
-                return MORE;
+                return 1;
             }
             if (a[0] > b[0]) {
-                return LESS;
+                return -1;
             }
         }
     }
@@ -55,7 +52,7 @@ function helper(a, b) {
 function siftUp(heap, idx) {
     let parentIndex = Math.floor(idx / 2);
 
-    while (parentIndex !== 0 && helper(heap[idx], heap[parentIndex]) === MORE) {
+    while (parentIndex !== 0 && compare(heap[idx], heap[parentIndex]) === 1) {
         [heap[parentIndex], heap[idx]] = [heap[idx], heap[parentIndex]]
         idx = parentIndex;
         parentIndex = Math.floor(idx / 2);
@@ -74,14 +71,14 @@ function siftDown(heap, idx) {
         rightIndex = idx * 2 + 1;
         swapIndex = leftIndex;
 
-        if (rightIndex < heap.length && helper(heap[leftIndex], heap[rightIndex]) === LESS) {
+        if (rightIndex < heap.length && compare(heap[leftIndex], heap[rightIndex]) === -1) {
             swapIndex = rightIndex;
         }
     }
 
     check();
 
-    while (leftIndex < heap.length && helper(heap[idx], heap[swapIndex]) === LESS) {
+    while (leftIndex < heap.length && compare(heap[idx], heap[swapIndex]) === -1) {
         [heap[idx], heap[swapIndex]] = [heap[swapIndex], heap[idx]];
         idx = swapIndex;
         check();
@@ -167,4 +164,4 @@ function readArray() {
 // const arr = [["tufhdbi",76,58],["rqyoazgbmv",59,78],["qvgtrlkmyrm",35,27],["tgcytmfpj",70,27],["xvf",84,19],["jzpnpgpcqbsmczrgvsu",30,3],["evjphqnevjqakze",92,15],["wwzwv",87,8],["tfpiqpwmkkduhcupp",1,82],["tzamkyqadmybky",5,81],["amotrxgba",0,6],["easfsifbzkfezn",100,28],["kivdiy",70,47]]
 // const arr = [["evjphqnevjqakze",92,15],["wwzwv",87,8],["tfpiqpwmkkduhcupp",1,82],["tzamkyqadmybky",5,81],["amotrxgba",0,6],["easfsifbzkfezn",100,28],["kivdiy",70,47]]
 
-// console.log(heapSort(arr));
+//console.log(heapSort(arr));
