@@ -1,4 +1,4 @@
-//if (process.env.REMOTE_JUDGE !== 'true') {
+if (process.env.REMOTE_JUDGE !== 'true') {
     class CNode {
         constructor(value, left = null, right = null) {
             this.value = value;
@@ -6,14 +6,12 @@
             this.right = right;
         }
     }
-//}
+}
 
 
 function solution(root) {
-    let [, maxTreeSum] = searchMaxPath(root);
-    //const [, result] = searchMax(root);
-    console.log(maxTreeSum)
-    return maxTreeSum;
+    const [, result] = searchMax(root);
+    return result;
 }
 
 function searchMax(root, result) {
@@ -21,27 +19,19 @@ function searchMax(root, result) {
         return [0, result];
     }
 
-    // let [leftMax, ]
-}
+    let [left, newResult] = searchMax(root.left, result);
+    let [right, rightFix] = searchMax(root.right, newResult);
 
-function searchMaxPath(root, maxSum = null) {
-    if (root === null) {
-        return [0, maxSum];
-    }
+    let branch = Math.max(left, right) + root.value;
+    let tree = Math.max(branch, left + right + root.value);
 
-    let [leftMaxSum, updatedMaxSum] = searchMaxPath(root.left, maxSum);
-    let [rightMaxSum, updatedMaxSum2] = searchMaxPath(root.right, updatedMaxSum);
-
-    let branchMaxSum = Math.max(leftMaxSum, rightMaxSum) + root.value;
-    let subtreeMaxSum = Math.max(branchMaxSum, leftMaxSum + rightMaxSum + root.value);
-
-    if (updatedMaxSum === null) {
-        updatedMaxSum = subtreeMaxSum;
+    if (!newResult) {
+        newResult = tree;
     } else {
-        updatedMaxSum = Math.max(subtreeMaxSum, updatedMaxSum);
+        newResult = Math.max(newResult, tree);
     }
 
-    return [branchMaxSum, updatedMaxSum];
+    return [branch, newResult];
 }
 
 function test() {
@@ -53,4 +43,4 @@ function test() {
     console.assert(solution(node5) === 6);
 }
 
-test();
+// test();
