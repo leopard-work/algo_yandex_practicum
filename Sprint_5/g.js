@@ -22,7 +22,7 @@ function searchMax(root, result) {
     let [left, newResult] = searchMax(root.left, result);
     let [right, rightFix] = searchMax(root.right, newResult);
 
-    let branch = Math.max(left, right, Math.max(left, right) + root.value, root.value);
+    let branch = Math.max(Math.max(left, right) + root.value, root.value);
     let tree = Math.max(branch, left + right + root.value);
 
     if (!newResult) {
