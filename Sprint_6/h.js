@@ -4,19 +4,20 @@ const BLACK = 1;
 
 function timeToOut(n, m, graph) {
     const colors = new Array(n + 1).fill(WHITE);
-    let start = [];
-    let end = [];
+    let start = new Array(n + 1).fill(0);
+    let end = new Array(n + 1).fill(0);
     //const time = new Array(n + 1).fill(0).map(() => []);
 
-    const stack = [startIndex];
+    const stack = [1];
     let ms = 0;
 
     while (stack.length) {
         let v = stack.pop();
 
         if (colors[v] === WHITE) {
-            time[v].push(ms);
-            ms++;
+            // time[v].push(ms);
+            // ms++;
+            start[v] = ms++;
             colors[v] = GRAY;
             stack.push(v);
 
@@ -29,13 +30,22 @@ function timeToOut(n, m, graph) {
         } else {
             if (colors[v] === GRAY) {
                 colors[v] = BLACK
-                time[v].push(ms);
-                ms++;
+                // time[v].push(ms);
+                // ms++;
+                end[v] = ms++;
             }
         }
     }
 
-    return time.join('\n').replace(/[,]+/g,' ');
+    let output = "";
+
+    for (let i = 1; i <= n; i++) {
+        output += `${start[i]} ${end[i]} \n`;
+    }
+
+    return output;
+
+    // return time.join('\n').replace(/[,]+/g,' ');
 }
 
 
@@ -51,6 +61,8 @@ function solve() {
         let tmp = readArray();
         graph[tmp[0]].push(tmp[1]);
     }
+
+    // timeToOut(input[0], input[1], graph);
 
     process.stdout.write(`${timeToOut(input[0], input[1], graph)}`);
 }
