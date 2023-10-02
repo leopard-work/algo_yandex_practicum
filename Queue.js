@@ -1,3 +1,27 @@
+// class Queue {
+//     #tail = null;
+//     #head = null;
+//     length = 0;
+//
+//     push(value) {
+//         const element = { next: null, value };
+//         if (this.#head) this.#head.next = element;
+//         if (this.#tail === null) this.#tail = element;
+//         this.#head = element;
+//         this.length++;
+//     }
+//
+//     shift() {
+//         const element = this.#tail;
+//         if (element === null) return;
+//         this.#tail = element.next;
+//         if (this.#head === element) this.#head = null;
+//         this.length--;
+//         return element.value;
+//     }
+// }
+
+
 class Queue {
     constructor(n) {
         this.queue = new Array(n).fill(null);
