@@ -1,3 +1,5 @@
+// https://contest.yandex.ru/contest/25070/run-report/92779303/
+
 const readline = require("readline");
 const fs = require("fs");
 const path = require("path");
@@ -5,7 +7,7 @@ const path = require("path");
 let curLine = 0;
 let n = 0;
 let graph = null;
-const colors = new Map();
+let colors = null;
 
 readline
     .createInterface({
@@ -14,16 +16,17 @@ readline
     .on("line", line => {
         if (curLine === 0) {
             n = parseInt(line);
-            graph = new Array(n).fill(null).map(() => []);
+            graph = new Array(n + 1).fill(null).map(() => []);
+            colors = new Array(n + 1).fill(-1);
         } else {
             const s = line.trim().split("");
 
-            for (let i = curLine; i < n; i++) {
-                graph[curLine].push(i + 1);
-            }
-
             for (let i = 0; i < s.length; i++) {
-                colors.set(`${curLine}-${curLine + 1 + i}`, s[i]);
+                if (s[i] === "R") {
+                    graph[curLine].push(curLine + i + 1);
+                } else {
+                    graph[curLine + i + 1].push(curLine);
+                }
             }
         }
         curLine++;
@@ -31,6 +34,38 @@ readline
     .on("close", () => railways())
 
 function railways() {
-    console.log(graph)
-    console.log(colors)
+    let ans = 1;
+
+    for (let start = 1; start <= n; start++) {
+        if (!ans) {
+            break;
+        }
+
+        const stack = [start];
+
+        while (stack.length > 0 && ans) {
+            let v = stack.pop();
+
+            if (colors[v] === -1) {
+                colors[v] = 0;
+                stack.push(v);
+
+                for (let i = 0; i < graph[v].length; i++) {
+                    let u = graph[v][i];
+
+                    if (colors[u] === 0) {
+                        ans = 0;
+                    }
+
+                    if (colors[u] === -1) {
+                        stack.push(u);
+                    }
+                }
+            } else {
+                colors[v] = 1;
+            }
+        }
+    }
+
+    console.log(ans ? "YES" : "NO");
 }
