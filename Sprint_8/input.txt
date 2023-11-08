@@ -1,2 +1,5 @@
-1
-ava
+abacaba
+3
+abac
+caba
+aba
