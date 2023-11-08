@@ -1,1 +1,4 @@
-abababab
+3
+abacaba
+abudabi
+abcdefg
